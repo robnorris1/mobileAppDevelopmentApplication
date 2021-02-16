@@ -7,10 +7,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import Home from './components/home';
+import LoginScreen from './components/LoginScreen';
 import About from './components/about';
 import Contact from './components/contact';
 import CreateUser from './components/createUser';
+import Login from './components/Login';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,15 +43,15 @@ class App extends Component{
             }}
 
           >
-            <Tab.Screen name = "Home" component={Home} />
+            <Tab.Screen name = "Home" component={LoginScreen} />
             <Tab.Screen name = "About" component={About} />
             <Tab.Screen name = "Contact" component={Contact} />
             <Tab.Screen name = "CreateUser" component={CreateUser} options={({route})=>({tabBarButton: () => null})} />
+            <Tab.Screen name = "Login" component={Login} options={({route})=>({tabBarButton: () => null})} />
             
           </Tab.Navigator>
         </NavigationContainer>
     );
   }
 }
-
 export default App; 
