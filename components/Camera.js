@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import {View, TextInput } from 'react-native';
 
-class Contact extends Component{
+class Camera extends Component{
 
     constructor(props){
         super(props);
@@ -31,4 +31,4 @@ class Contact extends Component{
     }
 }
 
-export default Contact;
+export default Camera;

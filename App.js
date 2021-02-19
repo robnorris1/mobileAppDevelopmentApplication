@@ -1,17 +1,19 @@
 import 'react-native-gesture-handler';
 
 import React, { Component } from'react';
-import {NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import LoginScreen from './components/LoginScreen';
-import About from './components/about';
-import Contact from './components/contact';
+import Search from './components/Search';
 import CreateUser from './components/createUser';
 import Login from './components/Login';
+import Logout from './components/Logout';
+import Profile from './components/Profile';
+import Camera from './components/Camera';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,11 +27,13 @@ class App extends Component{
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
 
-              if (route.name === 'Home') {
+              if (route.name === 'LoginScreen') {
                 iconName = focused ? 'home' : 'home-outline';
-              } else if (route.name === 'About') {
+              } else if (route.name === 'Search') {
                 iconName = focused ? 'person' : 'person-outline';
-              } else if (route.name === 'Contact'){
+              } else if (route.name === 'Camera'){
+                iconName = focused ? 'send' : 'send-outline';
+              } else if (route.name === 'Profile'){
                 iconName = focused ? 'send' : 'send-outline';
               } 
 
@@ -43,12 +47,13 @@ class App extends Component{
             }}
 
           >
-            <Tab.Screen name = "Home" component={LoginScreen} />
-            <Tab.Screen name = "About" component={About} />
-            <Tab.Screen name = "Contact" component={Contact} />
+            <Tab.Screen name = "LoginScreen" component={LoginScreen} />
+            <Tab.Screen name = "Search" component={Search} />
+            <Tab.Screen name = "Camera" component={Camera} />
+            <Tab.Screen name = "Profile" component={Profile} />
             <Tab.Screen name = "CreateUser" component={CreateUser} options={({route})=>({tabBarButton: () => null})} />
             <Tab.Screen name = "Login" component={Login} options={({route})=>({tabBarButton: () => null})} />
-            
+            <Tab.Screen name = "Logout" component={Logout} options={({route})=>({tabBarButton: () => null})} />
           </Tab.Navigator>
         </NavigationContainer>
     );

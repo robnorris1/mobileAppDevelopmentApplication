@@ -63,7 +63,7 @@ export default class Login extends Component {
                 await AsyncStorage.setItem('@session_token',JSON.stringify(response.token));
                 await AsyncStorage.setItem('@user_id', JSON.stringify(response.id));
                 console.log(this.props.navigation);
-                this.props.navigation.navigate('Home');
+                this.props.navigation.navigate('LoginScreen');
             });
     }
 
