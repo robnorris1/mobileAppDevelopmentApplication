@@ -14,6 +14,8 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import Profile from './components/Profile';
 import Camera from './components/Camera';
+import Locations from './components/Locations';
+
 
 const Tab = createBottomTabNavigator();
 
@@ -54,6 +56,7 @@ class App extends Component{
             <Tab.Screen name = "CreateUser" component={CreateUser} options={({route})=>({tabBarButton: () => null})} />
             <Tab.Screen name = "Login" component={Login} options={({route})=>({tabBarButton: () => null})} />
             <Tab.Screen name = "Logout" component={Logout} options={({route})=>({tabBarButton: () => null})} />
+            <Tab.Screen name = "Locations" component={Locations} options={({route})=>({tabBarButton: () => null})} />
           </Tab.Navigator>
         </NavigationContainer>
     );

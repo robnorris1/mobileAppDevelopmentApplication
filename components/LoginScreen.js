@@ -42,6 +42,7 @@ export default class LoginScreen extends Component {
     componentWillUnmount() {
         this.unsubscribe();
     }
+    
 
     getData = async () => {
         const value = await AsyncStorage.getItem('@session_token');

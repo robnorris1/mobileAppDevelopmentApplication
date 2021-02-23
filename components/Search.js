@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, TextInput, ActivityIndicator, Text, Button } from 'react-native';
+import { View, TextInput, ActivityIndicator, Text, Button,  TouchableOpacity} from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FlatList } from 'react-native-gesture-handler';
 import { Rating, AirbnbRating } from 'react-native-ratings';
+
+import Locations from './Locations';
 
 class Search extends Component {
 
@@ -25,9 +27,7 @@ class Search extends Component {
     }
     getData = async (url) => {
         let value = (await AsyncStorage.getItem('@session_token')).replace(/"/g,"");
-        
-        console.log("value: " + value);
-        console.log("url: " + url);
+
         return fetch(url, {
             method: 'GET',
             headers: {
@@ -36,8 +36,6 @@ class Search extends Component {
             }
         })
             .then((response) => {
-                console.log("first then");
-                console.log(response);
                 if (response.status === 200) {
                     return response.json();
                 } else {
@@ -46,22 +44,17 @@ class Search extends Component {
 
             })
             .then((response) => {
-                console.log("second then : " + response);
                 this.setState({
                     isLoading: false,
                     locations: response
                 });
             })
             .catch((error) => {
-                console.log(error);
             });
     }
 
     search = () => {
         let url = "http://10.0.2.2:3333/api/1.0.0/find?"
-
-        console.log(this.state.q);
-        console.log(this.state.overall_rating);
 
         if (this.state.q != '') {
             url += "q=" + this.state.q + "&";
@@ -80,7 +73,7 @@ class Search extends Component {
             returnObject[name] = rating;
             return returnObject;
         };
-        this.setState(stateObject);
+        this.setState( stateObject );
     }
 
     render() {
@@ -112,11 +105,13 @@ class Search extends Component {
                     <FlatList
                         data={this.state.locations}
                         renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate("Locations" , {location_id: item.location_id})}>
                             <View style={{ padding: 10 }}>
-                                <Text> ID: {item.location_id} </Text>
+                                <Text> ID: {parseInt(item.location_id)} </Text>
                                 <Text> {item.location_name}</Text>
                                 <Text> Rating: {item.avg_overall_rating}</Text>
                             </View>
+                            </TouchableOpacity>
                         )}
                         keyExtractor={(item) => item.location_id.toString()}
                     />
