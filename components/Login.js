@@ -15,7 +15,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import LoginScreen from './LoginScreen';
+import Profile from './Profile';
 
 export default class Login extends Component {
 
@@ -63,7 +63,7 @@ export default class Login extends Component {
                 await AsyncStorage.setItem('@session_token',JSON.stringify(response.token));
                 await AsyncStorage.setItem('@user_id', JSON.stringify(response.id));
                 console.log(this.props.navigation);
-                this.props.navigation.navigate('LoginScreen');
+                this.props.navigation.navigate('Profile');
             });
     }
 

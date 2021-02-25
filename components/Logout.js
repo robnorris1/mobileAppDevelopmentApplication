@@ -15,7 +15,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import LoginScreen from './LoginScreen';
+import Profile from './Profile';
 
 export default class Logoout extends Component {
 
@@ -30,7 +30,7 @@ export default class Logoout extends Component {
     }
 
     componentDidMount() {
-        this.unsubscribe = this.props.navigation.addListener(() => {
+        this.unsubscribe = this.props.navigation.addListener('focus',() => {
             this.checkLoggedIn();
         })
     }
@@ -65,13 +65,13 @@ export default class Logoout extends Component {
             }
         })
             .then((response) => {
-                this.props.navigation.navigate('LoginScreen');
+                this.props.navigation.navigate('Profile');
                 console.log("happy");
                 if(response.status === 200){
                     this.getData();
-                    this.props.navigation.navigate("LoginScreen");
+                    this.props.navigation.navigate("Profile");
                 }else if(response.status === 401){
-                    this.props.navigation.navigate("LoginScreen");
+                    this.props.navigation.navigate("Profile");
                 }else{
                     throw 'Something went wrong';
                 }
