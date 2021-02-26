@@ -18,6 +18,8 @@ import Locations from './components/Locations';
 import Review from './components/Review';
 import UserInfo from './components/UserInfo';
 import UpdateInfo from './components/UpdateInfo';
+import GetCameraReview from './components/GetCameraReview';
+import DeleteCameraReview from './components/DeleteCameraReview';
 
 
 const Tab = createBottomTabNavigator();
@@ -63,6 +65,8 @@ class App extends Component{
             <Tab.Screen name = "Review" component={Review} options={({route})=>({tabBarButton: () => null})} />
             <Tab.Screen name = "UserInfo" component={UserInfo} options={({route})=>({tabBarButton: () => null})} />
             <Tab.Screen name = "UpdateInfo" component={UpdateInfo} options={({route})=>({tabBarButton: () => null})} />
+            <Tab.Screen name = "GetCameraReview" component={GetCameraReview} options={({route})=>({tabBarButton: () => null})} />
+            <Tab.Screen name = "DeleteCameraReview" component={DeleteCameraReview} options={({route})=>({tabBarButton: () => null})} />
           </Tab.Navigator>
         </NavigationContainer>
     );

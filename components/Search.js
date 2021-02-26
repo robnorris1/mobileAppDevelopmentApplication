@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { View, TextInput, ActivityIndicator, Text, Button,  TouchableOpacity} from 'react-native';
+import { View, TextInput, ActivityIndicator, Text, Button, TouchableOpacity, Alert, ScrollView } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FlatList } from 'react-native-gesture-handler';
 import { Rating, AirbnbRating } from 'react-native-ratings';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 import Locations from './Locations';
+
+
 
 class Search extends Component {
 
@@ -25,8 +28,13 @@ class Search extends Component {
     componentDidMount() {
         this.getData("http://10.0.2.2:3333/api/1.0.0/find");
     }
+
+    getAuthKey = async () => {
+        return (await AsyncStorage.getItem('@session_token')).replace(/"/g, "");
+    }
+
     getData = async (url) => {
-        let value = (await AsyncStorage.getItem('@session_token')).replace(/"/g,"");
+        let value = (await this.getAuthKey());
 
         return fetch(url, {
             method: 'GET',
@@ -73,7 +81,68 @@ class Search extends Component {
             returnObject[name] = rating;
             return returnObject;
         };
-        this.setState( stateObject );
+        this.setState(stateObject);
+    }
+
+    favouriteALocation(location_id) {
+        this.getAuthKey().then((value) => {
+
+            fetch("http://10.0.2.2:3333/api/1.0.0/location/" + location_id + "/favourite", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Authorization': value
+                }
+            })
+                .then((responseJson) => {
+                    if (responseJson.status === 200) {
+                        return responseJson.json();
+                    } else {
+                        throw 'Issues';
+                    }
+                })
+                .then((responseJson) => {
+                    this.setState({
+                        isLoading: false,
+                        location: responseJson
+                    });
+                })
+
+                .catch((error) => {
+                });
+
+            Alert.alert("Favourite Location");
+        });
+    }
+
+    UnfavouriteALocation(location_id) {
+        this.getAuthKey().then((value) => {
+            fetch("http://10.0.2.2:3333/api/1.0.0/location/" + location_id + "/favourite", {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Authorization': value
+                }
+            })
+                .then((responseJson) => {
+                    if (responseJson.status === 200) {
+                        return responseJson.json();
+                    } else {
+                        throw 'Issues';
+                    }
+                })
+                .then((responseJson) => {
+                    this.setState({
+                        isLoading: false,
+                        location: responseJson
+                    });
+                })
+
+                .catch((error) => {
+                });
+
+            Alert.alert("Unfavourite Location");
+        });
     }
 
     render() {
@@ -85,7 +154,8 @@ class Search extends Component {
             )
         } else {
             return (
-                <View>
+                <ScrollView>
+                    <View style= {{padding:20}}>
                     <Text>Search </Text>
                     <TextInput
                         value={this.state.q}
@@ -105,17 +175,27 @@ class Search extends Component {
                     <FlatList
                         data={this.state.locations}
                         renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate("Locations" , {location_id: item.location_id})}>
-                            <View style={{ padding: 10 }}>
-                                <Text> ID: {parseInt(item.location_id)} </Text>
-                                <Text> {item.location_name}</Text>
-                                <Text> Rating: {item.avg_overall_rating}</Text>
-                            </View>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate("Locations", { location_id: item.location_id })}>
+                                <View style={{ padding: 10 }}>
+                                    <Text> ID: {parseInt(item.location_id)} </Text>
+                                    <Text> {item.location_name}</Text>
+                                    <Text> Rating: {item.avg_overall_rating}</Text>
+                                    <Button
+                                        title="Favourite a location"
+                                        onPress={() => this.favouriteALocation(item.location_id)}
+                                    />
+
+                                    <Button
+                                        title="Unfavourite a location"
+                                        onPress={() => this.UnfavouriteALocation(item.location_id)}
+                                    />
+                                </View>
                             </TouchableOpacity>
                         )}
                         keyExtractor={(item) => item.location_id.toString()}
                     />
-                </View>
+                    </View>
+                </ScrollView>
             )
         }
     }

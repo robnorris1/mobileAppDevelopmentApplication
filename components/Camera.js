@@ -1,33 +1,79 @@
-import React, { Component} from 'react';
-import {View, TextInput } from 'react-native';
+import React, { Component } from 'react';
+import { View, TextInput, Text, Button, Alert, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RNCamera } from 'react-native-camera'
 
-class Camera extends Component{
+class Camera extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
-            email: '',
-            password: ''
+            review_id: 0,
+            location_id: 0,
+            location: null,
+            isLoading: true,
+            location: {},
+            AuthCode: ""
         }
     }
 
-    handleEmailInput = (email) => {
-        this.setState({email: email})
+    getAuthCode = async () => {
+
+        let value = (await AsyncStorage.getItem('@session_token')).replace(/"/g, "");
+
+        return value;
     }
 
-    
-    handlePasswordInput = (password) => {
-        this.setState({password: password})
+    takePicture = async () => {
+        const options = { quality: 0.5, base64: true }
+        const data = await this.camera.takePictureAsync(options);
+        let { review_id } = this.props.route.params;
+        this.state.review_id = review_id;
+        let { location_id } = this.props.route.params;
+        this.state.location_id = location_id;
+        this.getAuthCode().then((value) => {
+            if (this.camera) {
+
+                fetch("http://10.0.2.2:3333/api/1.0.0/location/" + location_id + "/review/" + review_id + "/photo", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'image/jpeg',
+                        'X-Authorization': value
+                    },
+                    body: data
+                })
+
+                    .then((response) => {
+                        if (response.status === 200) {
+                            Alert.alert("Picture Added")
+                            return response.json();
+                        } else {
+                            throw error;
+                        }
+
+                    })
+                    .catch((error) => {
+                    });
+            }
+        })
     }
 
-    render(){
-        return(
-            <View>
-                <TextInput placeholder="email..." onChangeText={this.handleEmailInput} value={this.state.email} />
-                <TextInput placeholder="password..." onChangeText={this.handlePasswordInput} value={this.state.password} />
-                </View>
-        );
+    render() {
+        return (
+            <View style={{ flex: 1, width: '100%' }}>
+                <RNCamera
+                    ref={ref => {
+                        this.camera = ref
+                    }}
+                    style={{
+                        flex: 1,
+                        width: '100%'
+                    }}
+                />
+                <Button title="Take Photo" onPress={() => { this.takePicture() }} />
+            </View>
+        )
     }
 }
 

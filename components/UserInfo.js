@@ -82,12 +82,9 @@ export default class UserInfo extends Component {
         if (this.state.isLoading) {
             return (<Text> Loading </Text>)
         } else {
-            console.log(this.state.data);
-            console.log(this.state.data.email);
-            console.log(this.state.data.first_name);
-
             return (
-                <View>
+                <ScrollView>
+                <View style={{ padding: 10 }}>
                     <Text> first name: {this.state.data.first_name}</Text>
                     <Text> last name: {this.state.data.last_name}</Text>
                     <Text> email: {this.state.data.email}</Text>
@@ -112,15 +109,16 @@ export default class UserInfo extends Component {
                         data={this.state.data.favourite_locations}
                         renderItem={({ item }) => (
                             <View style={{ padding: 10 }}>
+                            <Text> Favourite Locations : </Text>
                                 <Text> Location id : {item.location_id}</Text>
                                 <Text> Location name : {item.location_name}</Text>
                                 <Text> Location town : {item.location_town}</Text>
-                                <Text> Overall Rating: {item.favourite_locations.overall_rating}</Text>
                             </View>
                         )}
 
                     />
                 </View>
+                </ScrollView>
 
 
 
@@ -128,6 +126,3 @@ export default class UserInfo extends Component {
         }
     }
 }
-
-//<Text> ID: {parseInt(item.user_id)} </Text>
-//<Text> {item.first_name}</Text>

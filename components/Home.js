@@ -63,6 +63,7 @@ class Home extends Component {
         } else {
             return (
                 <View>
+                    <Text> All Reviews </Text>
                     <FlatList
                         data={this.state.locations}
                         renderItem={({ item }) => (

@@ -40,7 +40,6 @@ export default class Review extends Component {
     }
 
     async sendReview(overall_rating, price_rating, quality_rating, clenliness_rating, review_body) {
-        console.log("LOOK HERE" + this.props)
         let review = {"overall_rating" : parseInt(overall_rating,10) , "price_rating" : parseInt(price_rating,10),"quality_rating" : parseInt(quality_rating,10),"clenliness_rating" : parseInt(clenliness_rating,10),"review_body" : review_body};
         let {location_id} = this.props.route.params;
         this.state.location_id = location_id;
