@@ -57,8 +57,6 @@ export default class Review extends Component {
         
             
             .then((response) => {
-                console.log("REQUEST HERE!!!!!!! : " + JSON.stringify(review));
-                console.log(response.status);
                 if (response.status === 201) {
                     return response;
                 } else if (response.status === 400) {

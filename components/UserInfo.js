@@ -36,10 +36,6 @@ export default class UserInfo extends Component {
     getAuthCode = async () => {
         let value = (await AsyncStorage.getItem('@session_token')).replace(/"/g, "");
         let valueID = (await AsyncStorage.getItem('@user_id'));
-
-        console.log("session token userinfo: " + value)
-        console.log("user id userinfo: " + valueID)
-
         return [value, valueID];
     }
 
@@ -64,7 +60,6 @@ export default class UserInfo extends Component {
 
                 })
                 .then((responseJson) => {
-                    console.log("LOOOK HERE ");
                     this.setState({
                         isLoading: false,
                         data: responseJson

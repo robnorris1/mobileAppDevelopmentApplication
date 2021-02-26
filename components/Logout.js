@@ -66,7 +66,6 @@ export default class Logoout extends Component {
         })
             .then((response) => {
                 this.props.navigation.navigate('Profile');
-                console.log("happy");
                 if(response.status === 200){
                     this.getData();
                     this.props.navigation.navigate("Profile");
@@ -77,7 +76,6 @@ export default class Logoout extends Component {
                 }
             })
             .catch((error) => {
-                console.log("happy 2");
                 console.log(error);
                 ToastAndroid.show(error, ToastAndroid.SHORT);
             })

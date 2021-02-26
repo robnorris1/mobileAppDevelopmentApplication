@@ -41,7 +41,6 @@ export default class Login extends Component {
             body: JSON.stringify(this.state)
         })
             .then((response) => {
-                console.log(response.status);
                 if (response.status === 200) {
                     return response.json();
                 } else if (response.status === 400) {
@@ -55,14 +54,10 @@ export default class Login extends Component {
                 return response;
             })
             .catch((error) => {
-                console.log(error);
             })
             .then(async (response) => {
-                console.log("async method : ")
-                console.log(response);
                 await AsyncStorage.setItem('@session_token',JSON.stringify(response.token));
                 await AsyncStorage.setItem('@user_id', JSON.stringify(response.id));
-                console.log(this.props.navigation);
                 this.props.navigation.navigate('Profile');
             });
     }
